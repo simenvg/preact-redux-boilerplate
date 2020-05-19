@@ -1,5 +1,5 @@
 import { ApplicationState } from "../types";
-import { Actions } from "../actions/actions";
+import * as Actions from "../actions/actions";
 import { combineReducers } from "redux";
 
 const initialState: ApplicationState = {
@@ -8,21 +8,21 @@ const initialState: ApplicationState = {
 
 export const counter = (
     state = initialState,
-    action: Actions
+    action: Actions.Actions
 ): ApplicationState => {
-    if (action.type === "INCREMENT") {
+    if (action.type === Actions.INCREMENT) {
         return {
             counter: state.counter + 1
         };
-    } else if (action.type === "DECREMENT") {
+    } else if (action.type === Actions.DECREMENT) {
         return {
             counter: state.counter - 1
         };
-    } else if (action.type === "ADD") {
+    } else if (action.type === Actions.ADD) {
         return {
             counter: state.counter + action.payload.value
         };
-    } else if (action.type === "SUBTRACT") {
+    } else if (action.type === Actions.SUBTRACT) {
         return {
             counter: state.counter - action.payload.value
         };

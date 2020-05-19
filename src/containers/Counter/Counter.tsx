@@ -4,43 +4,23 @@ import { connect } from "react-redux";
 import CounterControl from "../../components/CounterControl/CounterControl";
 import CounterOutput from "../../components/CounterOutput/CounterOutput";
 import { ApplicationState } from "../../store/types";
-import { Actions } from "../../store/actions/actions";
+import * as Actions from "../../store/actions/actions";
+import { AppState } from "../../store";
 
 interface CounterState {
     counter: number;
 }
 
 export interface AppProps {
-    dispatch: (action: Actions) => void;
+    dispatch: (action: Actions.Actions) => void;
     ctr: number;
+    onIncrementCounter: () => void;
+    onDecrementCounter: () => void;
+    onAddCounter: () => void;
+    onSubtractCounter: () => void;
 }
 
-class Counter extends Component<AppProps> {
-    counterChangedHandler = (action: string, value: number): void => {
-        switch (action) {
-            case "inc":
-                this.setState((prevState: CounterState) => {
-                    return { counter: prevState.counter + value };
-                });
-                break;
-            case "dec":
-                this.setState((prevState: CounterState) => {
-                    return { counter: prevState.counter - value };
-                });
-                break;
-            case "add":
-                this.setState((prevState: CounterState) => {
-                    return { counter: prevState.counter + value };
-                });
-                break;
-            case "sub":
-                this.setState((prevState: CounterState) => {
-                    return { counter: prevState.counter - value };
-                });
-                break;
-        }
-    };
-
+class Counter extends Component<AppProps, CounterState> {
     render() {
         return (
             <div>
@@ -51,7 +31,7 @@ class Counter extends Component<AppProps> {
                 />
                 <CounterControl
                     label="Decrement"
-                    clicked={this.props.onDecremetnCounter}
+                    clicked={this.props.onDecrementCounter}
                 />
                 <CounterControl
                     label="Add 5"
@@ -66,7 +46,7 @@ class Counter extends Component<AppProps> {
     }
 }
 
-const mapStateToProps = (state: ApplicationState) => {
+const mapStateToProps = (state: AppState) => {
     return {
         ctr: state.counter.counter
     };
@@ -74,11 +54,12 @@ const mapStateToProps = (state: ApplicationState) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIncrementCounter: () => dispatch({ type: "INCREMENT" }),
-        onDecremetnCounter: () => dispatch({ type: "DECREMENT" }),
-        onAddCounter: () => dispatch({ type: "ADD", payload: { value: 4 } }),
+        onIncrementCounter: () => dispatch({ type: Actions.INCREMENT }),
+        onDecrementCounter: () => dispatch({ type: Actions.DECREMENT }),
+        onAddCounter: () =>
+            dispatch({ type: Actions.ADD, payload: { value: 5 } }),
         onSubtractCounter: () =>
-            dispatch({ type: "SUBTRACT", payload: { value: 5 } })
+            dispatch({ type: Actions.SUBTRACT, payload: { value: 5 } })
     };
 };
 
